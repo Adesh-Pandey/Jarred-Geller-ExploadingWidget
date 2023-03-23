@@ -1,0 +1,129 @@
+/* .column-individual{
+    padding: 20px;
+    height:120px;
+    width:80px;
+    background-color:black;
+    color:white;
+} */
+.column-collection-container{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+    
+    flex-direction:row-reverse;
+}
+.column-collection-container{
+    height:20px;
+}
+.inner-circle{
+    height:40px;
+    width:40px;
+    border-radius:20px;
+    background-color:#eda4ef;
+    margin:3px;
+}
+.column-individual-inner-circle-collection{
+    display:flex;
+    height:inherit;
+    background-color:#f7f7f7;
+    height:200px;
+    min-width:150px;
+    border: 3px solid #eda4ef;
+    border-radius:5px;
+}
+
+.cursor-div {
+    position: absolute;
+    left: ${cursorPosition.x}px;
+    top: ${cursorPosition.y}px;
+  }
+/* .base-number-overlay{
+    z-index:+10;
+} */
+.show-label-restart{
+    display:flex;
+    justify-content: space-between;
+    margin: 40px 20px;
+}
+.show-label-restart>button{
+    padding:8px 10px;   
+    background-color:white;
+    border: 2px solid rgb(182 182 182);
+    border-radius:5px;
+    box-shadow: 2px 2px rgba(0,0,0,0.2);
+    font-weight:800;
+}
+input.show-tokens{
+    height:18px;
+    width:18px;
+}
+.choose-conversion-list-option{
+    border:none;
+    position: relative;
+    top: -6px;
+    /* -webkit-appearance: none;
+    appearance: none; */
+
+}
+.choose-conversion{
+    width: 90%;
+    height: 50px;
+    margin: 50px 0;
+    text-align: center;
+    font-size: 28px;
+    position: relative;
+    margin-left: 35px;
+}
+.choose-conversion:after {
+    content: '';
+    width: 100%;
+    border-bottom: solid 3px black;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.borderless-div{
+    background-color:white;
+    width: auto;
+    display: inline-block;
+    z-index: 3;
+    padding: 0 13px 0 13px;
+    color: black;
+    position: relative;
+    font-family: calibri;
+    font-weight: lighter;
+    margin: 0;
+    top:4px;
+}
+
+.choose-conversion-list{
+    border:2px solid rgba(200,200,200,0.78);
+    padding: 1px 2px 1px 2px;
+    border-radius:5px;
+    width:fit-content;
+    position: absolute;
+    background-color:white;
+/* Same as the parents Background */
+    width: auto;
+    display: inline-block;
+    z-index: 3;
+    padding: 0 20px 0 20px;
+    color: black;
+    position: relative;
+    font-family: calibri;
+    font-weight: lighter;
+    margin: 0;
+
+}
+.choose-conversion-list{
+}
+.reverse-arrow{
+    max-width: 17px;
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
