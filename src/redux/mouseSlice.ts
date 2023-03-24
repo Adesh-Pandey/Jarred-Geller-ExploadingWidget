@@ -32,15 +32,26 @@ export const DotSlice = createSlice({
     name: 'allState',
     initialState,
     reducers: {
+
+        changeBase: (state, action: PayloadAction<number>) => {
+            state.base = action.payload
+        },
         mouseDownOnTheToken: (state, action: PayloadAction<number[]>) => {
             state.mouseDown = true;
             state.mouseDownSource = action.payload[0];
-            state.mouseDownCircle = action.payload[0]
+            state.mouseDownCircle = action.payload[1]
         },
         mouseUpOnColumn: (state, action: PayloadAction<number>) => {
             // console.log(action.payload)
             state.mouseDown = false;
             state.mouseupLocation = action.payload;
+
+            if (state.mouseDownSource == action.payload) {
+                state.mouseDownSource = -1;
+                state.mouseupLocation = -1;
+                return;
+            }
+
             let goingToLower = false;
             //somthingsss
             let decider = state.mouseupLocation - state.mouseDownSource;
@@ -102,6 +113,6 @@ export const DotSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } = DotSlice.actions
+export const { changeBase, mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } = DotSlice.actions
 
 export default DotSlice.reducer;

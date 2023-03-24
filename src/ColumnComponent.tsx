@@ -38,7 +38,7 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
 
     const initiateDrag = (e: any, idx: number) => {
         e.preventDefault()
-        // console.log(info)
+        console.log(InnerCircleList)
         setRebound(false);
         dispatch(mouseDownOnTheToken([order, idx]));
     }
@@ -50,8 +50,9 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
 
         setTimeout(() => {
             setShakeable((base <= InnerCircles));
-            setInnerCircleList([...Array(InnerCircles)])
+            // setInnerCircleList(getInnerCircleListForThecolumn())
             // console.log(circleListObject)
+            setInnerCircleList([...Array(InnerCircles)])
         }, 50);
         // console.log(InnerCircles)
 
@@ -113,7 +114,7 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
 
                                 setInnerCircleList(InnerCircleList.splice(idx, 1))
 
-                                // setInnerCircleList([...Array(InnerCircles)])
+                                setInnerCircleList(getInnerCircleListForThecolumn())
                                 // stopDrag(info)
                             }
                         }

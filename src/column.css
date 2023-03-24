@@ -8,8 +8,9 @@
 .column-collection-container{
     height:600px;
     display:flex;
+    margin:0 auto;
     justify-content:space-between;
-    width:100%;
+    width:80%;
     
     flex-direction:row-reverse;
 }

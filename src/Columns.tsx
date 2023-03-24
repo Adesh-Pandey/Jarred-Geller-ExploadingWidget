@@ -4,7 +4,7 @@ import "./column.css"
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { mouseDownOnTheToken, mouseUpOnColumn } from './redux/mouseSlice'
+import { changeBase, mouseDownOnTheToken, mouseUpOnColumn } from './redux/mouseSlice'
 import type { RootState } from './redux/store'
 
 function Columns() {
@@ -12,7 +12,8 @@ function Columns() {
     const [MouseDown, setMouseDown] = useState(false);
     const [Visibility, setVisibility] = useState(true)
     const containerDiv = useRef<HTMLDivElement>(null);
-
+    const selectRef = useRef<HTMLSelectElement>(null);
+    const dispatch = useDispatch()
     const ColumnCollection = useSelector((state: RootState) => state.allState.ColumnCollection)
     // const addColumn = () => {
     //     console.log(ColumnCollection);
@@ -33,8 +34,9 @@ function Columns() {
             <div className="borderless-div">
                 <div className="choose-conversion-list">
 
-                    <select className='choose-conversion-list-option' name="convert-from" id="from">
-                        <option value="2"> 1 <ArrowRightAltIcon className='reverse-arrow' /> to 2 </option>
+                    <select onChange={() => { dispatch(changeBase(Number(selectRef.current?.value))) }} ref={selectRef} className='choose-conversion-list-option' name="convert-from" id="from">
+                        <option value="2"> 1 <ArrowRightAltIcon className
+                            ='reverse-arrow' /> to 2 </option>
                         <option value="3">1 <ArrowRightAltIcon className='reverse-arrow' /> to 3</option>
                         <option value="4">1 <ArrowRightAltIcon className='reverse-arrow' /> to 4</option>
                         <option value="5">1 <ArrowRightAltIcon className='reverse-arrow' /> to 5</option>
