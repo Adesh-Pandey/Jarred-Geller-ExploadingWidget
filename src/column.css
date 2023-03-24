@@ -6,6 +6,7 @@
     color:white;
 } */
 .column-collection-container{
+    height:600px;
     display:flex;
     justify-content:space-between;
     width:100%;
@@ -13,7 +14,7 @@
     flex-direction:row-reverse;
 }
 .column-collection-container{
-    height:20px;
+    height:300px;
 }
 .inner-circle{
     height:40px;
@@ -30,6 +31,13 @@
     min-width:150px;
     border: 3px solid #eda4ef;
     border-radius:5px;
+
+
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat( 3,63px);
+    grid-template-rows: repeat( 4,51px);
+}
 }
 
 .cursor-div {

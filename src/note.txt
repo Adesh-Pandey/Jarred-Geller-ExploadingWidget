@@ -2,7 +2,7 @@ import React, { RefObject, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from './redux/store'
 import { mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } from './redux/mouseSlice'
-import { motion } from "framer-motion"
+import { motion, useDragControls } from "framer-motion"
 
 function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
 
@@ -36,11 +36,11 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
 
 
 
-    const initiateDrag = (e: any, idx: number) => {
+    const initiateDrag = (e: MouseEvent, info: Object) => {
         e.preventDefault()
         // console.log(info)
         setRebound(false);
-        dispatch(mouseDownOnTheToken([order, idx]));
+        dispatch(mouseDownOnTheToken(order));
     }
 
     const stopDrag = (info: any) => {
@@ -50,7 +50,7 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
 
         setTimeout(() => {
             setShakeable((base <= InnerCircles));
-            setInnerCircleList([...Array(InnerCircles)])
+            // setInnerCircleList([...Array(InnerCircles)])
             // console.log(circleListObject)
         }, 50);
         // console.log(InnerCircles)
@@ -71,13 +71,14 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
                 {/* {base ** order || 1} */}
                 {InnerCircleList.map((count, idx) => {
                     return <motion.div
-                        drag
+
                         whileDrag={{ scale: 0.8 }}
 
                         animate={{ scale: Shakeable && (base <= InnerCircles) ? [0.7, 2, 1] : [0, 1], }}
                         dragConstraints={constrainsRef}
                         dragElastic={0.1}
                         dragMomentum={false}
+                        // dragControls={dragControls}
                         // onPointerDown={startDrag}
                         // dragPropagation
                         dragSnapToOrigin={true}
@@ -87,7 +88,7 @@ function ColumnComponent({ constrainsRef, order, base }: { constrainsRef: RefObj
                         }}
 
                         onDragStart={
-                            (e) => { initiateDrag(e, idx) }
+                            initiateDrag
                             // (event, info) => console.log(info.point.x, info.point.y)
                         }
                         onDragEnd={

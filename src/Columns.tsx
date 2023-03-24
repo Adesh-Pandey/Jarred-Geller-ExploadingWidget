@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ColumnComponent from './ColumnComponent';
 import "./column.css"
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
@@ -11,6 +11,7 @@ function Columns() {
     const Base = useSelector((state: RootState) => state.allState.base)
     const [MouseDown, setMouseDown] = useState(false);
     const [Visibility, setVisibility] = useState(true)
+    const containerDiv = useRef<HTMLDivElement>(null);
 
     const ColumnCollection = useSelector((state: RootState) => state.allState.ColumnCollection)
     // const addColumn = () => {
@@ -31,30 +32,23 @@ function Columns() {
         <div className="choose-conversion">
             <div className="borderless-div">
                 <div className="choose-conversion-list">
-                    <select className='choose-conversion-list-option' name="convert-to" id="to">
-                        <option value="1">1</option>
-                        <option value="1">2</option>
-                        <option value="1">3</option>
-                        <option value="1">4</option>
-                        <option value="1">5</option>
-                    </select>
-                    <ArrowRightAltIcon className='reverse-arrow' />
+
                     <select className='choose-conversion-list-option' name="convert-from" id="from">
-                        <option value="2">2</option>
-                        <option value="1">3</option>
-                        <option value="1">4</option>
-                        <option value="1">5</option>
+                        <option value="2"> 1 <ArrowRightAltIcon className='reverse-arrow' /> to 2 </option>
+                        <option value="3">1 <ArrowRightAltIcon className='reverse-arrow' /> to 3</option>
+                        <option value="4">1 <ArrowRightAltIcon className='reverse-arrow' /> to 4</option>
+                        <option value="5">1 <ArrowRightAltIcon className='reverse-arrow' /> to 5</option>
                     </select>
                 </div>
             </div></div>
-        <div className="column-collection-container">
+        <div ref={containerDiv} className="column-collection-container">
 
 
 
             {/* <button onClick={addColumn}>Plus icon</button> */}
             {Visibility &&
                 ColumnCollection.map((elem, idx) => {
-                    return <ColumnComponent order={idx} base={Base} key={idx}
+                    return <ColumnComponent constrainsRef={containerDiv} order={idx} base={Base} key={idx}
                     // MouseDown={MouseDown} setMouseDown={setMouseDown}
                     />
                 })
