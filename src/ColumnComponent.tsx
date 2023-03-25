@@ -134,8 +134,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
                 outlineOffset: "2px",
                 border: `3px solid ${borderColor}`
             } : { border: `3px solid ${borderColor}` }} variants={variant} animate={visibility ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
-                {/* <audio ref={audio} className="addedCircle" src='./audios/addedPopSound.mp3'>
-                </audio> */}
+                <div className="overlay">{base ** order || 1}</div>
                 <motion.div
                     id={`${order}`}
                     drag
