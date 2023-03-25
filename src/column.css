@@ -89,6 +89,7 @@
 }
 .column-individual-inner-circle-collection{
     display:flex;
+    flex-direction:column;
     height:inherit;
     background-color:#95959514;
     height:200px;
@@ -191,7 +192,6 @@ input.show-tokens{
 }
 
 .column-individual-inner-circle-collection-inner-div{
-  margin-left: -8px;
   display: grid;
 
   grid-auto-flow: row;
@@ -208,14 +208,13 @@ input.show-tokens{
 .overlay{
   position: relative;
   /* margin: auto; */
-
   color:#cccccc;
   font-family: cursive;
-    font-weight: bolder;
-  
+  font-weight: bolder;
   height:30px;
-  top: 41%;
-  left: 43%;
+  top: -41%;
+  margin:0 auto;
+  width:fit-content;
 }
 
 .token-control{

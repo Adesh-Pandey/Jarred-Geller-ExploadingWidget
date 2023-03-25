@@ -119,7 +119,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
 
                 <div style={{ color: `${borderColor}` }} className='total-token-count'>{visibility ? InnerCircles : "0"}
                 </div>
-                <div>
+                <div style={{ marginTop: "4px" }}>
                     <label className="switch">
                         <input checked={visibility}
                             onChange={() => {
@@ -134,7 +134,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
                 outlineOffset: "2px",
                 border: `3px solid ${borderColor}`
             } : { border: `3px solid ${borderColor}` }} variants={variant} animate={visibility ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
-                <div className="overlay">{base ** order || 1}</div>
+
                 <motion.div
                     id={`${order}`}
                     drag
@@ -216,6 +216,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
                         </motion.div>
 
                     })}</motion.div>
+                <div className="overlay">{base ** order || 1}</div>
             </motion.div>
         </div>
         <div className="token-control">
