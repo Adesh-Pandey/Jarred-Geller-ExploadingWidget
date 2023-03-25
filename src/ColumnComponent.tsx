@@ -12,7 +12,6 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
     const dispatch = useDispatch()
     const InnerCircles = useSelector((state: RootState) => state.allState.InnerCirclesList[order])
     const audio = useRef<HTMLAudioElement>(null);
-    const [visible, setVisible] = useState(true);
     const [stacking, setstacking] = useState(false)
 
     const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
@@ -115,14 +114,14 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
     return (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }}>
         <div className='column-individual' id={`${order}`}>
             <div className="count-tokens">
-                <div className='total-token-count'>{visible ? InnerCircles : "0"}</div><div><label className="switch">
+                <div className='total-token-count'>{visibility ? InnerCircles : "0"}</div><div><label className="switch">
                     <input defaultChecked onChange={() => {
-                        console.log(visible); setVisible(!visible)
+                        console.log(visibility); alterVisibility(order)
                         dispatch(temporaryDisable(order));
                     }} type="checkbox" />
                     <span className="slider round"></span>
                 </label></div></div>
-            <motion.div variants={variant} animate={visible ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
+            <motion.div variants={variant} animate={visibility ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
                 {/* <audio ref={audio} className="addedCircle" src='./audios/addedPopSound.mp3'>
                 </audio> */}
                 <motion.div
@@ -212,7 +211,7 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
             <button onClick={resetCirclesInthisColumn}>0</button>
             <button className='end-button-right' onClick={removeInnerCircle}><RemoveIcon /></button></div>
 
-        <div className="net-value-column"><div className="axtual-total-value">{visible ? (base ** order) * InnerCircles : "0"}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
+        <div className="net-value-column"><div className="axtual-total-value">{visibility ? (base ** order) * InnerCircles : "0"}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
     </motion.div >
 
     )
