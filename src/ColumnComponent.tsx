@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import PopAudio from './audios/addedPopSound.mp3'
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowTokenLabel: boolean, constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
+function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrainsRef, order, base }: { alterVisibility: Function, visibility: boolean, ShowTokenLabel: boolean, constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
 
     const MouseDownSource = useSelector((state: RootState) => state.allState.mouseDownSource)
     const dispatch = useDispatch()
@@ -18,7 +18,7 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
     const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
 
 
-    const [InnerCircleList, setInnerCircleList] = useState([...Array(InnerCircles)])
+    const [InnerCircleList, setInnerCircleList] = useState([...Array(InnerCircles > 15 ? 15 : InnerCircles)])
     const [Shakeable, setShakeable] = useState(false);
 
 
@@ -61,7 +61,7 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
 
         setTimeout(() => {
             setShakeable((base <= InnerCircles));
-            setInnerCircleList([...Array(InnerCircles)])
+            setInnerCircleList([...Array(InnerCircles > 15 ? 15 : InnerCircles)])
         }, 70);
 
     }, [InnerCircles,])
@@ -99,6 +99,19 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
         dispatch(resetCircles(order));
     }
 
+    const whatToDisplayInsidetoken = (idx: number) => {
+        if (idx != InnerCircleList.length - 1) {
+            return ShowTokenLabel ? base ** order || 1 : ""
+        }
+        let count = 1;
+
+        count += InnerCircles - InnerCircleList.length;
+        if (count == 1) {
+            return ShowTokenLabel ? base ** order || 1 : "";
+        }
+        let sendValue = ShowTokenLabel ? `x${count}` : "";
+        return sendValue;
+    }
     return (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }}>
         <div className='column-individual' id={`${order}`}>
             <div className="count-tokens">
@@ -140,7 +153,6 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
                                     break;
                                     // console.log(document.elementsFromPoint(info.point.x, info.point.y)[i])
                                 }
-
                             }
                             if (callChanges != -1) {
                                 if (elementsHere[callChanges].id) {
@@ -151,7 +163,7 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
                                 }
                             }
 
-                            setInnerCircleList([...Array(InnerCircles)])
+                            setInnerCircleList([...Array(InnerCircles > 15 ? 15 : InnerCircles)])
 
                             setstacking(false);
                         }
@@ -167,12 +179,6 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
 
                     {/* {base ** order || 1} */}
                     {InnerCircleList.map((count, idx) => {
-
-                        {
-                            if (idx >= 200) {
-                                return <></>
-                            }
-                        }
 
                         return <motion.div
 
@@ -191,13 +197,9 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
                                 type: 'spring', bounce: "0.5"
                                 , repeat: base <= InnerCircles && !stacking ? Infinity : 0, duration: 1
                             }}
-
-
                             key={idx}
-
-
                             className="inner-circle">
-                            {ShowTokenLabel ? base ** order || 1 : ""}
+                            {idx < 14 ? (ShowTokenLabel ? base ** order || 1 : "") : whatToDisplayInsidetoken(idx)}
 
 
                         </motion.div>

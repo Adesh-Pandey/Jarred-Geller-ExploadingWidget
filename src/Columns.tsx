@@ -24,6 +24,8 @@ function Columns() {
     const [ShowTokenLabel, setShowTokenLabel] = useState(true)
     const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
 
+    const [visibilityList, setvisibilityList] = useState([...Array(5)].map(x => true))
+
     const handleSelectChange = (event: any) => {
         dispatch(changeBase(Number(event.target.value))); setselected(event.target.value);
     }
@@ -34,6 +36,11 @@ function Columns() {
 
         }
         return finalVal;
+    }
+    const alterVisibility = (order: number) => {
+        let newList = [...visibilityList]
+        newList[order] = !newList[order];
+        setvisibilityList([...newList]);
     }
 
     return (<div className='main-app-wrapper-container'>
@@ -73,7 +80,7 @@ function Columns() {
 
                     {Visibility &&
                         ColumnCollection.map((elem, idx) => {
-                            return <ColumnComponent ShowTokenLabel={ShowTokenLabel} constrainsRef={containerDiv} order={idx} base={Base} key={idx}
+                            return <ColumnComponent alterVisibility={alterVisibility} visibility={visibilityList[idx]} ShowTokenLabel={ShowTokenLabel} constrainsRef={containerDiv} order={idx} base={Base} key={idx}
 
                             />
                         })
