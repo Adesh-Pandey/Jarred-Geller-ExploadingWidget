@@ -32,7 +32,7 @@
 .add-column,.remove-column{
   background-color: #95959514;
     border: none;
-  height: 200px;
+  height: 240px;
   margin-top: 2rem;
   min-width:3.5rem;
 }
@@ -72,19 +72,19 @@
 
 .inner-circle{
 
-    background-color:#eda4ef;
-      height: 30px;
-      width: 30px;
-      border-radius: 20px;
+    /* background-color:#eda4ef; */
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
 
-      margin: 3px;
-      font-family: cursive;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: black;
-      font-size: small;
-      box-shadow:1px 2px 2px 1px #50404e4f;
+  margin: 3px;
+  font-family: cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: x-small;
+  box-shadow:1px 2px 2px 1px #50404e4f;
   
 }
 .column-individual-inner-circle-collection{
@@ -93,7 +93,7 @@
     background-color:#95959514;
     height:200px;
     min-width:120px;
-    border: 3px solid #eda4ef;
+    /* border: 3px solid #eda4ef; */
     border-radius:5px;
     margin-left:10px;
 }
@@ -200,6 +200,7 @@ input.show-tokens{
 
 #from{
   padding-bottom:0px;
+  font-family:cursive;
 }
 
 .token-control{
@@ -317,4 +318,9 @@ ul>li>svg{
   
   .slider.round:before {
     border-radius: 50%;
+  }
+
+
+  .column-individual{
+    margin-right: 3px
   }

@@ -43,7 +43,7 @@ export const DotSlice = createSlice({
                 return;
             }
             state.InnerCirclesList[action.payload] = 0;
-            state.InnerCirclesList[action.payload] = 0;
+            state.TemporaryDiableList[action.payload] = 0;
 
         },
         temporaryDisable: (state, action: PayloadAction<number>) => {

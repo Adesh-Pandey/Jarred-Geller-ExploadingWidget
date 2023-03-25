@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import PopAudio from './audios/addedPopSound.mp3'
 import RemoveIcon from '@mui/icons-material/Remove';
 
-function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrainsRef, order, base }: { alterVisibility: Function, visibility: boolean, ShowTokenLabel: boolean, constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
+function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLabel, constrainsRef, order, base }: { borderColor: String, alterVisibility: Function, visibility: boolean, ShowTokenLabel: boolean, constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
 
     const MouseDownSource = useSelector((state: RootState) => state.allState.mouseDownSource)
     const dispatch = useDispatch()
@@ -98,6 +98,7 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
         dispatch(resetCircles(order));
     }
 
+
     const whatToDisplayInsidetoken = (idx: number) => {
         if (idx != InnerCircleList.length - 1) {
             return ShowTokenLabel ? base ** order || 1 : ""
@@ -113,7 +114,7 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
     }
     return (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }}>
         <div className='column-individual' id={`${order}`}>
-            <div className="count-tokens">
+            <div className="count-tokens" style={{ border: (base <= InnerCircles && visibility) ? "2px solid #ea0000" : "2px solid white" }}>
                 <div className='total-token-count'>{visibility ? InnerCircles : "0"}</div><div><label className="switch">
                     <input checked={visibility} onChange={() => {
                         alterVisibility(order)
@@ -121,7 +122,12 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
                     }} type="checkbox" />
                     <span className="slider round"></span>
                 </label></div></div>
-            <motion.div variants={variant} animate={visibility ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
+            <motion.div style={base <= InnerCircles ? {
+                outlineColor: "#ea0000",
+                outlineStyle: "auto",
+                outlineOffset: "2px",
+                border: `3px solid ${borderColor}`
+            } : { border: `3px solid ${borderColor}` }} variants={variant} animate={visibility ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
                 {/* <audio ref={audio} className="addedCircle" src='./audios/addedPopSound.mp3'>
                 </audio> */}
                 <motion.div
@@ -197,6 +203,7 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
                                 , repeat: base <= InnerCircles && !stacking ? Infinity : 0, duration: 1
                             }}
                             key={idx}
+                            style={{ backgroundColor: `${borderColor}` }}
                             className="inner-circle">
                             {idx < 14 ? (ShowTokenLabel ? base ** order || 1 : "") : whatToDisplayInsidetoken(idx)}
 

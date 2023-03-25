@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 function Columns() {
+    const [colorList, setcolorList] = useState(["#D2ABFE", "#ED74B8", "#FF8B1A", "#3CA776", "#107FF0"])
     const Base = useSelector((state: RootState) => state.allState.base)
     const [MouseDown, setMouseDown] = useState(false);
     const [Visibility, setVisibility] = useState(true)
@@ -56,7 +57,7 @@ function Columns() {
 
 
     return (<div className='main-app-wrapper-container'>
-        <div className='show-label-restart'><div>
+        <div className='show-label-restart' style={{ fontFamily: "cursive" }}><div>
             <input className='show-tokens' type="checkbox" checked={ShowTokenLabel} value={ShowTokenLabel ? 1 : 0} onChange={() => {
                 setShowTokenLabel(!ShowTokenLabel);
             }} /> Show Token Label</div> <button onClick={() => { ClearAllState() }}>Restart</button></div>
@@ -92,7 +93,7 @@ function Columns() {
 
                     {Visibility &&
                         ColumnCollection.map((elem, idx) => {
-                            return <ColumnComponent alterVisibility={alterVisibility} visibility={visibilityList[idx]} ShowTokenLabel={ShowTokenLabel} constrainsRef={containerDiv} order={idx} base={Base} key={idx}
+                            return <ColumnComponent borderColor={colorList[idx % colorList.length]} alterVisibility={alterVisibility} visibility={visibilityList[idx]} ShowTokenLabel={ShowTokenLabel} constrainsRef={containerDiv} order={idx} base={Base} key={idx}
 
                             />
                         })
