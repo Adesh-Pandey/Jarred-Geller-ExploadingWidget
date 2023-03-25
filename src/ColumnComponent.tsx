@@ -114,14 +114,20 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
     }
     return (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }}>
         <div className='column-individual' id={`${order}`}>
-            <div className="count-tokens" style={{ border: (base <= InnerCircles && visibility) ? "2px solid #ea0000" : "2px solid white" }}>
-                <div className='total-token-count'>{visibility ? InnerCircles : "0"}</div><div><label className="switch">
-                    <input checked={visibility} onChange={() => {
-                        alterVisibility(order)
-                        dispatch(temporaryDisable(order));
-                    }} type="checkbox" />
-                    <span className="slider round"></span>
-                </label></div></div>
+            <div className="count-tokens"
+                style={{ border: (base <= InnerCircles && visibility) ? "2px solid #ea0000" : "2px solid white" }}>
+
+                <div style={{ color: `${borderColor}` }} className='total-token-count'>{visibility ? InnerCircles : "0"}
+                </div>
+                <div>
+                    <label className="switch">
+                        <input checked={visibility}
+                            onChange={() => {
+                                alterVisibility(order)
+                                dispatch(temporaryDisable(order));
+                            }} type="checkbox" />
+                        <span className="slider round"></span>
+                    </label></div></div>
             <motion.div style={base <= InnerCircles ? {
                 outlineColor: "#ea0000",
                 outlineStyle: "auto",
@@ -218,7 +224,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
             <button onClick={resetCirclesInthisColumn}>0</button>
             <button className='end-button-right' onClick={removeInnerCircle}><RemoveIcon /></button></div>
 
-        <div className="net-value-column"><div className="axtual-total-value">{visibility ? (base ** order) * InnerCircles : "0"}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
+        <div className="net-value-column"><div style={{ color: `${borderColor}` }} className="axtual-total-value">{visibility ? (base ** order) * InnerCircles : "0"}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
     </motion.div >
 
     )
