@@ -23,8 +23,8 @@ const initialState: DotState = {
     mouseupLocation: -1,
     mouseDownSource: -1,
     mouseDownCircle: -1,
-    InnerCirclesList: [0, 0, 0, 0, 0],
-    ColumnCollection: [0, 1, 2, 3, 4],
+    InnerCirclesList: [0, 0, 0],
+    ColumnCollection: [0, 1, 2],
     CircleListObject: []
 }
 
@@ -32,10 +32,25 @@ export const DotSlice = createSlice({
     name: 'allState',
     initialState,
     reducers: {
+        resetCircles: (state, action: PayloadAction<number>) => {
+            state.InnerCirclesList[action.payload] = 0;
 
+        },
+        removeColumn: (state) => {
+            if (state.ColumnCollection.length == 1) {
+                return;
+            }
+            state.ColumnCollection.splice(state.ColumnCollection.length - 1, 1);
+            state.InnerCirclesList.splice(state.InnerCirclesList.length - 1, 1);
+        },
         changeBase: (state, action: PayloadAction<number>) => {
             state.base = action.payload
         },
+        addColumn: (state) => {
+            state.ColumnCollection.push(state.ColumnCollection.length);
+            state.InnerCirclesList.push(0);
+        }
+        ,
         mouseDownOnTheToken: (state, action: PayloadAction<number[]>) => {
             state.mouseDown = true;
             state.mouseDownSource = action.payload[0];
@@ -65,26 +80,27 @@ export const DotSlice = createSlice({
             if (!goingToLower) {
                 if (state.InnerCirclesList[state.mouseDownSource] >= numberOfTokenRequired) {
 
-                    state.CircleListObject.reverse()
-                    for (let i = 0; i < numberOfTokenRequired; i++) {
-                        const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
-                        state.CircleListObject.splice(idx, 1)
-                    }
+                    // state.CircleListObject.reverse()
+                    // for (let i = 0; i < numberOfTokenRequired; i++) {
+                    //     const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
+                    //     state.CircleListObject.splice(idx, 1)
+                    // }
                     state.InnerCirclesList[state.mouseDownSource] -= numberOfTokenRequired;
                     state.InnerCirclesList[state.mouseupLocation] += 1;
-                    state.CircleListObject.reverse()
-                    state.CircleListObject.push({ parentId: state.mouseupLocation })
+                    // state.CircleListObject.reverse()
+                    // state.CircleListObject.push({ parentId: state.mouseupLocation })
                 }
             } else {
 
-                state.CircleListObject.reverse()
-                for (let i = 0; i < numberOfTokenRequired; i++) {
-                    // const idx = state.CircleListObject.indexOf({ parentId: state.mouseupLocation })
-                    state.CircleListObject.push({ parentId: state.mouseupLocation })
-                }
-                state.CircleListObject.reverse()
-                const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
-                state.CircleListObject.splice(idx, 1)
+                // state.CircleListObject.reverse()
+                // for (let i = 0; i < numberOfTokenRequired; i++) {
+                //     // const idx = state.CircleListObject.indexOf({ parentId: state.mouseupLocation })
+                //     state.CircleListObject.push({ parentId: state.mouseupLocation })
+                // }
+
+                // const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
+                // state.CircleListObject.splice(idx, 1)
+                // state.CircleListObject.reverse()
                 state.InnerCirclesList[state.mouseDownSource] -= 1;
                 state.InnerCirclesList[state.mouseupLocation] += numberOfTokenRequired;
             }
@@ -94,25 +110,25 @@ export const DotSlice = createSlice({
 
         },
         addTokenInColumn: (state, action: PayloadAction<number>) => {
-            state.mouseDown = true;
+            state.mouseDown = false;
             state.InnerCirclesList[action.payload] += 1;
-            state.CircleListObject.push({ parentId: action.payload })
+            // state.CircleListObject.push({ parentId: action.payload })
         },
         removeTokenInColumn: (state, action: PayloadAction<number>) => {
-            state.mouseDown = true;
+            state.mouseDown = false;
             if (state.InnerCirclesList[action.payload] == 0) {
                 return;
             }
             state.InnerCirclesList[action.payload] -= 1;
-            state.CircleListObject.reverse()
-            state.CircleListObject.splice(state.CircleListObject.indexOf({ parentId: action.payload }), 1)
-            state.CircleListObject.reverse()
+            // state.CircleListObject.reverse()
+            // state.CircleListObject.splice(state.CircleListObject.indexOf({ parentId: action.payload }), 1)
+            // state.CircleListObject.reverse()
         },
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { changeBase, mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } = DotSlice.actions
+export const { resetCircles, removeColumn, addColumn, changeBase, mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } = DotSlice.actions
 
 export default DotSlice.reducer;
