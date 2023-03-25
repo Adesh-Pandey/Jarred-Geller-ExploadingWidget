@@ -22,9 +22,18 @@ function Columns() {
     const ColumnCollection = useSelector((state: RootState) => state.allState.ColumnCollection)
     const [selected, setselected] = useState("2")
     const [ShowTokenLabel, setShowTokenLabel] = useState(true)
+    const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
 
     const handleSelectChange = (event: any) => {
         dispatch(changeBase(Number(event.target.value))); setselected(event.target.value);
+    }
+    const totalValue = () => {
+        let finalVal = 0;
+        for (let index = 0; index < TemporaryDisabledList.length; index++) {
+            finalVal += TemporaryDisabledList[index] != -1 ? TemporaryDisabledList[index] * Base ** (index) : 0;
+
+        }
+        return finalVal;
     }
 
     return (<div className='main-app-wrapper-container'>
@@ -79,7 +88,7 @@ function Columns() {
             </div>
         </div>
         <div className="result">
-            ={" "} 44
+            ={" "} {totalValue()}
         </div>
     </div>
     )

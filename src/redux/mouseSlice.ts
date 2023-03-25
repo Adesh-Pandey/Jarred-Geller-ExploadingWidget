@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface MyCircleObj {
-    parentId: number
-}
-
 export interface DotState {
     base: number,
     mouseDown: boolean,
@@ -13,7 +9,7 @@ export interface DotState {
     mouseDownCircle: number,
     InnerCirclesList: number[],
     ColumnCollection: number[],
-    CircleListObject: MyCircleObj[]
+    TemporaryDiableList: number[]
 }
 
 
@@ -25,7 +21,7 @@ const initialState: DotState = {
     mouseDownCircle: -1,
     InnerCirclesList: [0, 0, 0],
     ColumnCollection: [0, 1, 2],
-    CircleListObject: []
+    TemporaryDiableList: [0, 0, 0]
 }
 
 export const DotSlice = createSlice({
@@ -33,9 +29,23 @@ export const DotSlice = createSlice({
     initialState,
     reducers: {
         resetCircles: (state, action: PayloadAction<number>) => {
+            if (state.TemporaryDiableList[action.payload] == -1) {
+                return;
+            }
+            state.InnerCirclesList[action.payload] = 0;
             state.InnerCirclesList[action.payload] = 0;
 
         },
+        temporaryDisable: (state, action: PayloadAction<number>) => {
+            if (state.TemporaryDiableList[action.payload] != -1) {
+                state.TemporaryDiableList[action.payload] = -1;
+            } else {
+                state.TemporaryDiableList[action.payload] = state.InnerCirclesList[action.payload]
+            }
+
+        }
+
+        ,
         removeColumn: (state) => {
             if (state.ColumnCollection.length == 1) {
                 return;
@@ -49,6 +59,7 @@ export const DotSlice = createSlice({
         addColumn: (state) => {
             state.ColumnCollection.push(state.ColumnCollection.length);
             state.InnerCirclesList.push(0);
+            state.TemporaryDiableList.push(0);
         }
         ,
         mouseDownOnTheToken: (state, action: PayloadAction<number[]>) => {
@@ -57,7 +68,6 @@ export const DotSlice = createSlice({
             state.mouseDownCircle = action.payload[1]
         },
         mouseUpOnColumn: (state, action: PayloadAction<number>) => {
-            // console.log(action.payload)
             state.mouseDown = false;
             state.mouseupLocation = action.payload;
 
@@ -68,7 +78,6 @@ export const DotSlice = createSlice({
             }
 
             let goingToLower = false;
-            //somthingsss
             let decider = state.mouseupLocation - state.mouseDownSource;
             if (decider < 0) {
                 decider *= -1
@@ -80,29 +89,18 @@ export const DotSlice = createSlice({
             if (!goingToLower) {
                 if (state.InnerCirclesList[state.mouseDownSource] >= numberOfTokenRequired) {
 
-                    // state.CircleListObject.reverse()
-                    // for (let i = 0; i < numberOfTokenRequired; i++) {
-                    //     const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
-                    //     state.CircleListObject.splice(idx, 1)
-                    // }
                     state.InnerCirclesList[state.mouseDownSource] -= numberOfTokenRequired;
                     state.InnerCirclesList[state.mouseupLocation] += 1;
-                    // state.CircleListObject.reverse()
-                    // state.CircleListObject.push({ parentId: state.mouseupLocation })
+                    state.TemporaryDiableList[state.mouseDownSource] -= numberOfTokenRequired;
+                    state.TemporaryDiableList[state.mouseupLocation] += 1;
                 }
             } else {
 
-                // state.CircleListObject.reverse()
-                // for (let i = 0; i < numberOfTokenRequired; i++) {
-                //     // const idx = state.CircleListObject.indexOf({ parentId: state.mouseupLocation })
-                //     state.CircleListObject.push({ parentId: state.mouseupLocation })
-                // }
 
-                // const idx = state.CircleListObject.indexOf({ parentId: state.mouseDownSource })
-                // state.CircleListObject.splice(idx, 1)
-                // state.CircleListObject.reverse()
                 state.InnerCirclesList[state.mouseDownSource] -= 1;
                 state.InnerCirclesList[state.mouseupLocation] += numberOfTokenRequired;
+                state.TemporaryDiableList[state.mouseDownSource] -= 1;
+                state.TemporaryDiableList[state.mouseupLocation] += numberOfTokenRequired;
             }
 
             state.mouseupLocation = -1;
@@ -110,25 +108,38 @@ export const DotSlice = createSlice({
 
         },
         addTokenInColumn: (state, action: PayloadAction<number>) => {
+
             state.mouseDown = false;
+            if (state.TemporaryDiableList[action.payload] == -1) {
+                return;
+            }
             state.InnerCirclesList[action.payload] += 1;
-            // state.CircleListObject.push({ parentId: action.payload })
+            state.TemporaryDiableList[action.payload] += 1;
         },
         removeTokenInColumn: (state, action: PayloadAction<number>) => {
             state.mouseDown = false;
+            if (state.TemporaryDiableList[action.payload] == -1) {
+                return;
+            }
             if (state.InnerCirclesList[action.payload] == 0) {
                 return;
             }
             state.InnerCirclesList[action.payload] -= 1;
-            // state.CircleListObject.reverse()
-            // state.CircleListObject.splice(state.CircleListObject.indexOf({ parentId: action.payload }), 1)
-            // state.CircleListObject.reverse()
+            state.TemporaryDiableList[action.payload] -= 1;
         },
 
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { resetCircles, removeColumn, addColumn, changeBase, mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn } = DotSlice.actions
+export const { temporaryDisable,
+    resetCircles,
+    removeColumn,
+    addColumn,
+    changeBase,
+    mouseDownOnTheToken,
+    mouseUpOnColumn,
+    addTokenInColumn,
+    removeTokenInColumn } = DotSlice.actions
 
 export default DotSlice.reducer;

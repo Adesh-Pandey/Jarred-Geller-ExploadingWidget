@@ -1,21 +1,4 @@
-/* html{
-  scrollbar-width:thin;
-  scrollbar-color:red green;
-} */
 
-
-
-
-
-
-
-/* .column-individual{
-    padding: 20px;
-    height:120px;
-    width:80px;
-    background-color:black;
-    color:white;
-} */
 .column-collection-container{
     /* height:600px; */
     display:flex;
@@ -29,9 +12,6 @@
     scrollbar-width:none;
     /* overflow-x:scroll; */
 }
-/* .column-collection-container{
-    height:300px;
-} */
 
 .parent-column-collection-container{
   display:flex;

@@ -1,25 +1,26 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from './redux/store'
-import { mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn, resetCircles } from './redux/mouseSlice'
+import { mouseDownOnTheToken, mouseUpOnColumn, addTokenInColumn, removeTokenInColumn, resetCircles, temporaryDisable } from './redux/mouseSlice'
 import { motion } from "framer-motion"
 import PopAudio from './audios/addedPopSound.mp3'
 import RemoveIcon from '@mui/icons-material/Remove';
 
 function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowTokenLabel: boolean, constrainsRef: RefObject<HTMLDivElement>, order: number, base: number }) {
 
-    const MouseDown = useSelector((state: RootState) => state.allState.mouseDown)
+    const MouseDownSource = useSelector((state: RootState) => state.allState.mouseDownSource)
     const dispatch = useDispatch()
     const InnerCircles = useSelector((state: RootState) => state.allState.InnerCirclesList[order])
     const audio = useRef<HTMLAudioElement>(null);
     const [visible, setVisible] = useState(true);
     const [stacking, setstacking] = useState(false)
 
+    const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
+
 
     const [InnerCircleList, setInnerCircleList] = useState([...Array(InnerCircles)])
     const [Shakeable, setShakeable] = useState(false);
 
-    const [Rebound, setRebound] = useState(true);
 
     const addInnerCircle = () => {
         audio?.current?.play();
@@ -100,15 +101,19 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
 
     return (<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }}>
         <div className='column-individual' id={`${order}`}>
-            <div className="count-tokens"><div className='total-token-count'>{InnerCircles}</div><div><label className="switch">
-                <input defaultChecked onChange={() => { console.log(visible); setVisible(!visible) }} type="checkbox" />
-                <span className="slider round"></span>
-            </label></div></div>
+            <div className="count-tokens">
+                <div className='total-token-count'>{visible ? InnerCircles : "0"}</div><div><label className="switch">
+                    <input defaultChecked onChange={() => {
+                        console.log(visible); setVisible(!visible)
+                        dispatch(temporaryDisable(order));
+                    }} type="checkbox" />
+                    <span className="slider round"></span>
+                </label></div></div>
             <motion.div variants={variant} animate={visible ? "open" : "closed"} id={`${order}`} className='column-individual-inner-circle-collection'>
                 {/* <audio ref={audio} className="addedCircle" src='./audios/addedPopSound.mp3'>
                 </audio> */}
                 <motion.div
-
+                    id={`${order}`}
                     drag
                     dragConstraints={constrainsRef}
                     dragElastic={0}
@@ -127,6 +132,10 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
                             const elementsHere = document.elementsFromPoint(info.point.x, info.point.y);
                             for (let i = 0; i < elementsHere.length; i++) {
                                 if (elementsHere[i].classList.contains("column-individual-inner-circle-collection")) {
+                                    if (TemporaryDisabledList[Number(elementsHere[i]?.id)] == -1 || TemporaryDisabledList[order] == -1) {
+                                        dispatch(mouseUpOnColumn(MouseDownSource))
+                                        break;
+                                    }
                                     callChanges = i;
                                     break;
                                     // console.log(document.elementsFromPoint(info.point.x, info.point.y)[i])
@@ -155,6 +164,7 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
                     }
 
                     className='column-individual-inner-circle-collection-inner-div'>
+
                     {/* {base ** order || 1} */}
                     {InnerCircleList.map((count, idx) => {
 
@@ -200,7 +210,7 @@ function ColumnComponent({ ShowTokenLabel, constrainsRef, order, base }: { ShowT
             <button onClick={resetCirclesInthisColumn}>0</button>
             <button className='end-button-right' onClick={removeInnerCircle}><RemoveIcon /></button></div>
 
-        <div className="net-value-column"><div className="axtual-total-value">{(base ** order) * InnerCircles}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
+        <div className="net-value-column"><div className="axtual-total-value">{visible ? (base ** order) * InnerCircles : "0"}</div> <div className="plus">{order == 0 ? "" : "+"}</div></div>
     </motion.div >
 
     )
