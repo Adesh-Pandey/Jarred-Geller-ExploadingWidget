@@ -28,6 +28,16 @@ export const DotSlice = createSlice({
     name: 'allState',
     initialState,
     reducers: {
+        clearAllStateInTheReduxState: (state) => {
+            state.base = 2;
+            state.mouseDown = false;
+            state.mouseupLocation = -1;
+            state.mouseDownSource = -1;
+            state.mouseDownCircle = -1;
+            state.InnerCirclesList = [0, 0, 0];
+            state.ColumnCollection = [0, 1, 2];
+            state.TemporaryDiableList = [0, 0, 0]
+        },
         resetCircles: (state, action: PayloadAction<number>) => {
             if (state.TemporaryDiableList[action.payload] == -1) {
                 return;
@@ -132,7 +142,8 @@ export const DotSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { temporaryDisable,
+export const { clearAllStateInTheReduxState,
+    temporaryDisable,
     resetCircles,
     removeColumn,
     addColumn,

@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import RemoveIcon from '@mui/icons-material/Remove';
 
-import { addColumn, changeBase, mouseDownOnTheToken, mouseUpOnColumn, removeColumn } from './redux/mouseSlice'
+import { addColumn, changeBase, clearAllStateInTheReduxState, mouseDownOnTheToken, mouseUpOnColumn, removeColumn } from './redux/mouseSlice'
 import type { RootState } from './redux/store'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,7 +24,7 @@ function Columns() {
     const [ShowTokenLabel, setShowTokenLabel] = useState(true)
     const TemporaryDisabledList = useSelector((state: RootState) => state.allState.TemporaryDiableList)
 
-    const [visibilityList, setvisibilityList] = useState([...Array(5)].map(x => true))
+    const [visibilityList, setvisibilityList] = useState([...Array(ColumnCollection.length)].map(x => true))
 
     const handleSelectChange = (event: any) => {
         dispatch(changeBase(Number(event.target.value))); setselected(event.target.value);
@@ -43,11 +43,23 @@ function Columns() {
         setvisibilityList([...newList]);
     }
 
+    const ClearAllState = () => {
+        dispatch(clearAllStateInTheReduxState())
+        setvisibilityList([...Array(ColumnCollection.length)].map(x => true));
+        setShowTokenLabel(true);
+        setselected("2");
+    }
+
+    useEffect(() => {
+        setvisibilityList([...Array(ColumnCollection.length)].map(x => true));
+    }, [ColumnCollection])
+
+
     return (<div className='main-app-wrapper-container'>
         <div className='show-label-restart'><div>
-            <input className='show-tokens' type="checkbox" defaultChecked value={ShowTokenLabel ? 1 : 0} onChange={() => {
+            <input className='show-tokens' type="checkbox" checked={ShowTokenLabel} value={ShowTokenLabel ? 1 : 0} onChange={() => {
                 setShowTokenLabel(!ShowTokenLabel);
-            }} /> Show Token Label</div> <button>Restart</button></div>
+            }} /> Show Token Label</div> <button onClick={() => { ClearAllState() }}>Restart</button></div>
 
         <div className="choose-conversion">
             <div className="borderless-div">

@@ -115,8 +115,8 @@ function ColumnComponent({ alterVisibility, visibility, ShowTokenLabel, constrai
         <div className='column-individual' id={`${order}`}>
             <div className="count-tokens">
                 <div className='total-token-count'>{visibility ? InnerCircles : "0"}</div><div><label className="switch">
-                    <input defaultChecked onChange={() => {
-                        console.log(visibility); alterVisibility(order)
+                    <input checked={visibility} onChange={() => {
+                        alterVisibility(order)
                         dispatch(temporaryDisable(order));
                     }} type="checkbox" />
                     <span className="slider round"></span>
