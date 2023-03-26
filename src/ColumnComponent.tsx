@@ -216,7 +216,7 @@ function ColumnComponent({ borderColor, alterVisibility, visibility, ShowTokenLa
                         </motion.div>
 
                     })}</motion.div>
-                {/* <div className="overlay">{base ** order || 1}</div> */}
+                <div className="overlay">{base ** order || 1}</div>
             </motion.div>
         </div>
         <div className="token-control">
